@@ -9,17 +9,14 @@ function print(value) {
     }
 }
 
-function decodeString(ubytes, offset, size) {
-    const data = ubytes.subarray(offset, offset + size);
-    return String.fromCharCode.apply(String, data);
-}
+const UTF8Decoder = new TextDecoder('utf-8');
 
 let memory;
 const imports = {
     env: {
         print(address, size) {
-            const ubytes = new Uint8Array(memory.buffer);
-            const message = decodeString(ubytes, address, size);
+            const ubytes = new Uint8Array(memory.buffer).subarray(address, address + size);
+            const message = UTF8Decoder.decode(ubytes);
             print(message);
         }
     }

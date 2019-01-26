@@ -31,7 +31,7 @@ extern {
 
 #[no_mangle]
 pub extern "C" fn start() {
-    let message = "Hello world\n";
+    let message = "电脑程序\n";
 
     for _ in 0..10 {
         unsafe {
