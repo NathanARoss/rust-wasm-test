@@ -14,15 +14,15 @@ const UTF8Decoder = new TextDecoder('utf-8');
 let memory;
 const imports = {
     env: {
-        print(address, size) {
-            const ubytes = new Uint8Array(memory.buffer).subarray(address, address + size);
+        print(ptr, size) {
+            const ubytes = new Uint8Array(memory.buffer).subarray(ptr, ptr + size);
             const message = UTF8Decoder.decode(ubytes);
             print(message);
         }
     }
 };
 
-fetch('wasm.wasm')
+fetch('out.wasm')
 .then(response => response.arrayBuffer())
 .then(bytes => WebAssembly.instantiate(bytes, imports))
 .then(results => {

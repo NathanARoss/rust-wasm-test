@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-RUSTFLAGS="-C link-args=-zstack-size=32768" cargo build --release --target=wasm32-unknown-unknown \
-&& rm wasm.wasm \
-&& mv -f ./target/wasm32-unknown-unknown/release/rust_wasm_test.wasm ./wasm.wasm \
-&& ls -l wasm.wasm
+RUSTFLAGS="-C link-arg=--strip-debug -C link-arg=-zstack-size=32768" cargo build --release --target=wasm32-unknown-unknown \
+&& ./small-wasm-trimmer < target/wasm32-unknown-unknown/release/rust_wasm_test.wasm > out.wasm \
+&& wc -c out.wasm
