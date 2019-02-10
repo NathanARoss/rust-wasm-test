@@ -26,7 +26,7 @@ fetch('out.wasm')
 .then(response => response.arrayBuffer())
 .then(bytes => WebAssembly.instantiate(bytes, imports))
 .then(results => {
-    const instance = results.instance;
-    memory = instance.exports.memory;
-    instance.exports.start();
+    const exports = results.instance.exports;
+    memory = exports.memory;
+    exports.start();
 });
