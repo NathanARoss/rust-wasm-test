@@ -14,9 +14,17 @@ const UTF8Decoder = new TextDecoder('utf-8');
 let memory;
 const imports = {
     env: {
-        print(ptr, size) {
+        puts(ptr, size) {
             const ubytes = new Uint8Array(memory.buffer).subarray(ptr, ptr + size);
             const message = UTF8Decoder.decode(ubytes);
+            print(message);
+        },
+        putc(char) {
+            const message = String.fromCharCode(char);
+            print(message);
+        },
+        putnum(value) {
+            const message = String(value);
             print(message);
         }
     }
@@ -29,4 +37,8 @@ fetch('out.wasm')
     const exports = results.instance.exports;
     memory = exports.memory;
     exports.start();
+
+    exports.remember(100);
+    exports.remember(200);
+    exports.remember(-1);
 });

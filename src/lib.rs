@@ -26,16 +26,36 @@ pub extern "C" fn oom(_: ::core::alloc::Layout) -> ! {
 }
 
 extern {
-    fn print(address: *const u8, size: usize);
+    fn puts(address: *const u8, size: usize);
+    fn putc(charcode: u32);
+    fn putnum(value: i32);
+}
+
+
+
+fn print(message: &str) {
+    unsafe {
+        puts(message.as_ptr(), message.len());
+    }
 }
 
 #[no_mangle]
 pub extern "C" fn start() {
-    let message = "电脑程序\n";
+    print("电脑程序\n");
+    print("Hello world\n");
 
-    for _ in 0..10 {
-        unsafe {
-            print(message.as_ptr(), message.len());
-        }
+    let message = "Hello Temmie!\n";
+    print(message);
+}
+
+static mut THING_TO_REMEMBER: u32 = 0;
+
+#[no_mangle]
+pub extern "C" fn remember(thing: u32) {
+    unsafe {
+        putnum(THING_TO_REMEMBER as i32);
+        putc(10u32); //line feed
+        THING_TO_REMEMBER = thing;
     }
 }
+
